@@ -18,29 +18,31 @@ document.addEventListener('DOMContentLoaded', () => {
     let isPaused = false;
 
     function startTimer() {
-        if (isPaused) {
-            isPaused = false;
-            return;
-        }
+        if (isPaused) return;  // If paused, do nothing
+
+        // Clear previous interval before starting a new one
+        stopTimers();
 
         if (currentPlayer === 'white') {
-            clearInterval(blackInterval);
             whiteInterval = setInterval(() => {
-                whiteTimeRemaining--;
-                updateDisplay();
-                if (whiteTimeRemaining <= 0) {
-                    alert("Time's up! Black wins.");
-                    resetGame();
+                if (!isPaused) {  // Only decrement when not paused
+                    whiteTimeRemaining--;
+                    updateDisplay();
+                    if (whiteTimeRemaining <= 0) {
+                        alert("Time's up! Black wins.");
+                        resetGame();
+                    }
                 }
             }, 1000);
         } else {
-            clearInterval(whiteInterval);
             blackInterval = setInterval(() => {
-                blackTimeRemaining--;
-                updateDisplay();
-                if (blackTimeRemaining <= 0) {
-                    alert("Time's up! White wins.");
-                    resetGame();
+                if (!isPaused) {  // Only decrement when not paused
+                    blackTimeRemaining--;
+                    updateDisplay();
+                    if (blackTimeRemaining <= 0) {
+                        alert("Time's up! White wins.");
+                        resetGame();
+                    }
                 }
             }, 1000);
         }
@@ -58,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function switchTurn() {
-        if (isPaused) return;
+        if (isPaused) return;  // Do not allow switching when paused
 
         stopTimers();
         currentPlayer = currentPlayer === 'white' ? 'black' : 'white';
@@ -82,18 +84,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function pauseGame() {
+        isPaused = !isPaused;  // Toggle the paused state
         if (isPaused) {
-            isPaused = false;
-            startTimer();
+            stopTimers();  // Stop the timers when pausing
         } else {
-            isPaused = true;
-            stopTimers();
+            startTimer();  // Resume the timers when unpausing
         }
     }
 
     function stopGame() {
         stopTimers();
-        isPaused = true;
+        isPaused = true;  // Set paused state to true
+        moveCountDisplay.textContent = `Moves: ${moveCount} (Stopped)`;
     }
 
     startButton.addEventListener('click', () => {

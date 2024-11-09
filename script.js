@@ -6,11 +6,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const startButton = document.getElementById('startButton');
     const resetButton = document.getElementById('resetButton');
     const timeInput = document.getElementById('timeInput');
+    const moveCountDisplay = document.getElementById('moveCountDisplay');
 
     let whiteTimeRemaining = 0;
     let blackTimeRemaining = 0;
     let currentPlayer = 'white';
     let whiteInterval, blackInterval;
+    let moveCount = 0;
 
     function startTimer() {
         if (currentPlayer === 'white') {
@@ -44,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateDisplay() {
         whiteTimer.textContent = `${whiteTimeRemaining}s`;
         blackTimer.textContent = `${blackTimeRemaining}s`;
+        moveCountDisplay.textContent = `Moves: ${moveCount}`;
     }
 
     function switchTurn() {
@@ -51,6 +54,8 @@ document.addEventListener('DOMContentLoaded', () => {
         currentPlayer = currentPlayer === 'white' ? 'black' : 'white';
         whiteDiv.classList.toggle('active', currentPlayer === 'white');
         blackDiv.classList.toggle('active', currentPlayer === 'black');
+        moveCount++;
+        updateDisplay();
         startTimer();
     }
 
@@ -59,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
         whiteTimeRemaining = parseInt(timeInput.value) || 0;
         blackTimeRemaining = parseInt(timeInput.value) || 0;
         currentPlayer = 'white';
+        moveCount = 0;
         whiteDiv.classList.add('active');
         blackDiv.classList.remove('active');
         updateDisplay();

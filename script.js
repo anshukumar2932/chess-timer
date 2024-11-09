@@ -79,7 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
         blackDiv.classList.remove('active');
         startTimer();
     });
-    
 
     stopButton.addEventListener('click', resetGame);
 

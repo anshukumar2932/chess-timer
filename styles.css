@@ -1,4 +1,3 @@
-/* Reset styles for consistency */
 * {
     margin: 0;
     padding: 0;
@@ -12,7 +11,7 @@ body, html {
     align-items: center;
     justify-content: center;
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    background-color: #d3d3d3; /* Gray background */
 }
 
 #controls {
@@ -20,12 +19,7 @@ body, html {
     display: flex;
     align-items: center;
     gap: 10px;
-}
-
-#counterDisplay {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #333;
+    flex-wrap: wrap;
 }
 
 input, button {
@@ -46,29 +40,29 @@ button:hover {
     background-color: #45a049;
 }
 
-#container {
+#timerContainer {
     display: flex;
-    width: 100%;
-    height: 70vh;
+    width: 60%;
+    gap: 20px;
+    justify-content: center;
 }
 
-.half {
+.playerTimer {
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 2em;
     color: white;
+    background-color: black;
+    padding: 20px;
+    border-radius: 10px;
     transition: transform 0.2s ease;
 }
 
-.half.active {
-    animation: blink 1s infinite; /* Blinking animation */
-}
-
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+.playerTimer.active {
+    background-color: green; /* Highlight the active timer */
+    color: #ffffff;
 }
 
 #white {
@@ -81,13 +75,13 @@ button:hover {
 }
 
 @media (orientation: landscape) {
-    #container {
+    #timerContainer {
         flex-direction: row;
     }
 }
 
 @media (orientation: portrait) {
-    #container {
+    #timerContainer {
         flex-direction: column;
     }
 }

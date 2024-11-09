@@ -28,10 +28,8 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Get settings from localStorage
-            const minutesPerPlayer = parseInt(window.localStorage.getItem('minutesPerPlayer'));
-            const extraSeconds = parseInt(window.localStorage.getItem('extraSeconds'));
-            const timingMethod = window.localStorage.getItem('timingMethod');
+            const minutesPerPlayer = parseInt(window.localStorage.getItem('minutesPerPlayer')) || 5;
+            const extraSeconds = parseInt(window.localStorage.getItem('extraSeconds')) || 0;
             const soundNotificationsEnabled = window.localStorage.getItem('soundNotifications') === 'true';
 
             let whiteTimeRemaining = minutesPerPlayer * 60;
@@ -124,7 +122,6 @@
 
             blackDiv.addEventListener('click', () => {
                 if (currentPlayer === 'black') {
-                    moveCount++;
                     currentPlayer = 'white';
                     playSound();
                     startTimer();

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Timer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="game">
+        <div id="container">
+            <div id="white" class="half">
+                <h2>White</h2>
+                <div id="whiteTime" class="timer">00:00</div>
+            </div>
+            <div id="black" class="half">
+                <h2>Black</h2>
+                <div id="blackTime" class="timer">00:00</div>
+            </div>
+        </div>
+
+        <div id="moveCountDisplay">Moves: 0</div>
+        <div id="statusMessage"></div>
+
+        <button id="pauseButton">Pause</button>
+        <button id="stopButton">Stop</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get settings from localStorage
+            const minutesPerPlayer = parseInt(window.localStorage.getItem('minutesPerPlayer'));
+            const extraSeconds = parseInt(window.localStorage.getItem('extraSeconds'));
+            const timingMethod = window.localStorage.getItem('timingMethod');
+            const soundNotificationsEnabled = window.localStorage.getItem('soundNotifications') === 'true';
+
+            let whiteTimeRemaining = minutesPerPlayer * 60;
+            let blackTimeRemaining = minutesPerPlayer * 60;
+            let moveCount = 0;
+            let currentPlayer = 'white';
+            let whiteInterval, blackInterval;
+            let isPaused = false;
+
+            const whiteTimer = document.getElementById('whiteTime');
+            const blackTimer = document.getElementById('blackTime');
+            const moveCountDisplay = document.getElementById('moveCountDisplay');
+            const pauseButton = document.getElementById('pauseButton');
+            const stopButton = document.getElementById('stopButton');
+            const statusMessage = document.getElementById('statusMessage');
+            const whiteDiv = document.getElementById('white');
+            const blackDiv = document.getElementById('black');
+
+            function playSound() {
+                if (soundNotificationsEnabled) {
+                    const audio = new Audio('notification-sound.mp3');
+                    audio.play();
+                }
+            }
+
+            function startTimer() {
+                if (isPaused) return;
+                stopTimers();
+
+                if (currentPlayer === 'white') {
+                    whiteInterval = setInterval(() => {
+                        if (!isPaused) {
+                            whiteTimeRemaining--;
+                            updateDisplay();
+                            if (whiteTimeRemaining <= 0) {
+                                endGame('Black');
+                            }
+                        }
+                    }, 1000);
+                } else {
+                    blackInterval = setInterval(() => {
+                        if (!isPaused) {
+                            blackTimeRemaining--;
+                            updateDisplay();
+                            if (blackTimeRemaining <= 0) {
+                                endGame('White');
+                            }
+                        }
+                    }, 1000);
+                }
+            }
+
+            function stopTimers() {
+                clearInterval(whiteInterval);
+                clearInterval(blackInterval);
+            }
+
+            function updateDisplay() {
+                whiteTimer.textContent = formatTime(whiteTimeRemaining);
+                blackTimer.textContent = formatTime(blackTimeRemaining);
+                moveCountDisplay.textContent = `Moves: ${moveCount}`;
+            }
+
+            function formatTime(timeInSeconds) {
+                const minutes = Math.floor(timeInSeconds / 60);
+                const seconds = timeInSeconds % 60;
+                return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            }
+
+            function endGame(winner) {
+                stopTimers();
+                statusMessage.textContent = `${winner} Won!!! Congratulations!`;
+                if (winner === 'Black') {
+                    blackDiv.style.width = "100%";
+                    whiteDiv.style.width = "0%";
+                } else {
+                    whiteDiv.style.width = "100%";
+                    blackDiv.style.width = "0%";
+                }
+            }
+
+            whiteDiv.addEventListener('click', () => {
+                if (currentPlayer === 'white') {
+                    moveCount++;
+                    currentPlayer = 'black';
+                    playSound();
+                    startTimer();
+                }
+            });
+
+            blackDiv.addEventListener('click', () => {
+                if (currentPlayer === 'black') {
+                    moveCount++;
+                    currentPlayer = 'white';
+                    playSound();
+                    startTimer();
+                }
+            });
+
+            pauseButton.addEventListener('click', () => {
+                isPaused = !isPaused;
+                if (!isPaused) startTimer();
+            });
+
+            stopButton.addEventListener('click', () => {
+                stopTimers();
+                statusMessage.textContent = "Game Stopped!";
+                whiteDiv.style.width = "50%";
+                blackDiv.style.width = "50%";
+            });
+
+            // Initialize the game
+            updateDisplay();
+            startTimer();
+        });
+    </script>
+</body>
+</html>

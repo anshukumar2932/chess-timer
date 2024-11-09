@@ -13,10 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let whiteInterval, blackInterval;
 
     function startTimer() {
-        console.log("Starting timer for:", currentPlayer);
-
         if (currentPlayer === 'white') {
-            clearInterval(blackInterval); // Ensure black timer is stopped
+            clearInterval(blackInterval);
             whiteInterval = setInterval(() => {
                 whiteTimeRemaining--;
                 updateDisplay();
@@ -26,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }, 1000);
         } else {
-            clearInterval(whiteInterval); // Ensure white timer is stopped
+            clearInterval(whiteInterval);
             blackInterval = setInterval(() => {
                 blackTimeRemaining--;
                 updateDisplay();
@@ -39,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function stopTimers() {
-        console.log("Stopping both timers");
         clearInterval(whiteInterval);
         clearInterval(blackInterval);
     }
@@ -50,7 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function switchTurn() {
-        console.log("Switching turn from:", currentPlayer);
         stopTimers();
         currentPlayer = currentPlayer === 'white' ? 'black' : 'white';
         whiteDiv.classList.toggle('active', currentPlayer === 'white');
@@ -59,7 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function resetGame() {
-        console.log("Resetting game");
         stopTimers();
         whiteTimeRemaining = parseInt(timeInput.value) || 0;
         blackTimeRemaining = parseInt(timeInput.value) || 0;
@@ -70,7 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     startButton.addEventListener('click', () => {
-        console.log("Start button clicked");
         whiteTimeRemaining = parseInt(timeInput.value);
         blackTimeRemaining = parseInt(timeInput.value);
 

@@ -10,22 +10,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const timeInput = document.getElementById('timeInput');
     const moveCountDisplay = document.getElementById('moveCountDisplay');
 
+    const timeDifferenceInput = document.getElementById('timeDifference');
+    const minutesPerPlayerInput = document.getElementById('minutesPerPlayer');
+    const extraSecondsInput = document.getElementById('extraSeconds');
+    const timingMethodInput = document.getElementById('timingMethod');
+    const soundNotificationsInput = document.getElementById('soundNotifications');
+    
     let whiteTimeRemaining = 0;
     let blackTimeRemaining = 0;
     let currentPlayer = 'white';
     let whiteInterval, blackInterval;
     let moveCount = 0;
     let isPaused = false;
+    let isFischer = false;
+    let soundNotificationsEnabled = true;
+    let extraSeconds = 0;
+
+    function playSound() {
+        if (soundNotificationsEnabled) {
+            const audio = new Audio('notification-sound.mp3');
+            audio.play();
+        }
+    }
 
     function startTimer() {
-        if (isPaused) return;  // If paused, do nothing
+        if (isPaused) return;
 
-        // Clear previous interval before starting a new one
         stopTimers();
 
         if (currentPlayer === 'white') {
             whiteInterval = setInterval(() => {
-                if (!isPaused) {  // Only decrement when not paused
+                if (!isPaused) {
                     whiteTimeRemaining--;
                     updateDisplay();
                     if (whiteTimeRemaining <= 0) {
@@ -36,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 1000);
         } else {
             blackInterval = setInterval(() => {
-                if (!isPaused) {  // Only decrement when not paused
+                if (!isPaused) {
                     blackTimeRemaining--;
                     updateDisplay();
                     if (blackTimeRemaining <= 0) {
@@ -54,78 +69,60 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateDisplay() {
-        whiteTimer.textContent = `${whiteTimeRemaining}s`;
-        blackTimer.textContent = `${blackTimeRemaining}s`;
+        whiteTimer.textContent = formatTime(whiteTimeRemaining);
+        blackTimer.textContent = formatTime(blackTimeRemaining);
         moveCountDisplay.textContent = `Moves: ${moveCount}`;
     }
 
-    function switchTurn() {
-        if (isPaused) return;  // Do not allow switching when paused
-
-        stopTimers();
-        // Switch the current player
-        currentPlayer = currentPlayer === 'white' ? 'black' : 'white';
-        whiteDiv.classList.toggle('active', currentPlayer === 'white');
-        blackDiv.classList.toggle('active', currentPlayer === 'black');
-        
-        // Only increment the move count after the black player moves
-        if (currentPlayer === 'black') {
-            moveCount++;  // Increment move count only after black's turn
-        }
-
-        updateDisplay();
-        startTimer();
+    function formatTime(timeInSeconds) {
+        const minutes = Math.floor(timeInSeconds / 60);
+        const seconds = timeInSeconds % 60;
+        return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
     }
 
     function resetGame() {
-        stopTimers();
-        whiteTimeRemaining = parseInt(timeInput.value) || 0;
-        blackTimeRemaining = parseInt(timeInput.value) || 0;
-        currentPlayer = 'white';
+        whiteTimeRemaining = parseInt(minutesPerPlayerInput.value) * 60;
+        blackTimeRemaining = parseInt(minutesPerPlayerInput.value) * 60;
         moveCount = 0;
         isPaused = false;
-        whiteDiv.classList.add('active');
-        blackDiv.classList.remove('active');
         updateDisplay();
     }
 
-    function pauseGame() {
-        isPaused = !isPaused;  // Toggle the paused state
-        if (isPaused) {
-            stopTimers();  // Stop the timers when pausing
-        } else {
-            startTimer();  // Resume the timers when unpausing
-        }
-    }
-
-    function stopGame() {
-        stopTimers();
-        isPaused = true;  // Set paused state to true
-        moveCountDisplay.textContent = `Moves: ${moveCount} (Stopped)`;
-    }
-
     startButton.addEventListener('click', () => {
-        whiteTimeRemaining = parseInt(timeInput.value);
-        blackTimeRemaining = parseInt(timeInput.value);
-
-        if (isNaN(whiteTimeRemaining) || whiteTimeRemaining <= 0) {
-            alert("Please enter a valid time in seconds.");
-            return;
-        }
-
+        const timeDifference = parseInt(timeDifferenceInput.value);
+        const extraSeconds = parseInt(extraSecondsInput.value);
+        whiteTimeRemaining = (parseInt(minutesPerPlayerInput.value) * 60) + timeDifference;
+        blackTimeRemaining = parseInt(minutesPerPlayerInput.value) * 60;
+        isFischer = timingMethodInput.value === 'fischer';
+        soundNotificationsEnabled = soundNotificationsInput.checked;
         resetGame();
         startTimer();
     });
 
-    pauseButton.addEventListener('click', pauseGame);
-    stopButton.addEventListener('click', stopGame);
+    pauseButton.addEventListener('click', () => {
+        isPaused = !isPaused;
+        if (!isPaused) startTimer();
+    });
+
+    stopButton.addEventListener('click', stopTimers);
+
     resetButton.addEventListener('click', resetGame);
 
     whiteDiv.addEventListener('click', () => {
-        if (currentPlayer === 'white') switchTurn();
+        if (currentPlayer === 'white') {
+            moveCount++;
+            currentPlayer = 'black';
+            playSound();
+            startTimer();
+        }
     });
 
     blackDiv.addEventListener('click', () => {
-        if (currentPlayer === 'black') switchTurn();
+        if (currentPlayer === 'black') {
+            moveCount++;
+            currentPlayer = 'white';
+            playSound();
+            startTimer();
+        }
     });
 });

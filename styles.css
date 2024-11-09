@@ -1,4 +1,4 @@
-/* Base styles */
+/* Base styling */
 * {
     margin: 0;
     padding: 0;
@@ -8,48 +8,113 @@
 body, html {
     height: 100%;
     font-family: Arial, sans-serif;
-    background-color: #f3f3f3;
+    background-color: #f0f0f5; /* Soft background for better contrast */
     color: #333;
 }
 
-/* Menu and game container styles */
-#menu, #game {
+/* Menu Container */
+#menu {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 20px;
     width: 100%;
+    max-width: 500px;
+    padding: 20px;
+    margin: 40px auto;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
     text-align: center;
 }
 
-/* Settings menu styles */
+/* Title */
 #menu h2 {
-    margin-bottom: 15px;
     font-size: 2em;
     color: #444;
+    margin-bottom: 20px;
 }
 
+/* Setting Boxes */
 .setting {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 15px;
     margin-bottom: 15px;
+    background-color: #f8f8fb; /* Light box background */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* Hover Effect for Setting Boxes */
+.setting:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    background-color: #f0f0f7;
+}
+
+/* Label Styling */
 .setting label {
-    font-size: 1.1em;
-    margin-right: 10px;
+    font-size: 1em;
     color: #555;
 }
 
+/* Input Styling */
 input[type="number"], select {
     padding: 8px 12px;
     font-size: 1em;
     border: 1px solid #ccc;
     border-radius: 5px;
-    width: 80px;
+    width: 100px;
+    transition: border-color 0.2s ease;
 }
 
-/* Game container and layout */
+/* Focus Effect for Inputs */
+input[type="number"]:focus, select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Checkbox Styling */
+input[type="checkbox"] {
+    transform: scale(1.2);
+}
+
+/* Start Button Styling */
+#startButton {
+    padding: 12px 20px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    margin-top: 20px;
+    width: 100%;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+#startButton:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+#startButton:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Game Container and Layout */
 #game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     height: 100%;
     padding: 20px;
 }
@@ -93,7 +158,7 @@ input[type="number"], select {
     font-weight: bold;
 }
 
-/* Move count and status message */
+/* Move Count and Status Message */
 #moveCountDisplay, #statusMessage {
     margin-top: 15px;
     font-weight: bold;
@@ -110,7 +175,7 @@ input[type="number"], select {
     text-align: center;
 }
 
-/* Button styles */
+/* Button Styles */
 button {
     padding: 12px 20px;
     font-size: 1em;
@@ -119,8 +184,8 @@ button {
     cursor: pointer;
     background-color: #007bff;
     color: white;
+    margin-top: 15px;
     transition: background-color 0.3s, transform 0.2s;
-    margin: 15px 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
@@ -134,7 +199,7 @@ button:active {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
-/* Hover effects */
+/* Hover Effects */
 #white:hover {
     background-color: #e6e6e6;
 }
@@ -143,7 +208,7 @@ button:active {
     background-color: #555;
 }
 
-/* Responsive layout adjustments */
+/* Responsive Layout Adjustments */
 @media (max-width: 768px) {
     #container {
         flex-direction: column;
@@ -159,7 +224,8 @@ button:active {
     }
 
     #menu {
-        padding: 10px;
+        width: 90%;
+        padding: 15px;
     }
 
     #moveCountDisplay, #statusMessage {

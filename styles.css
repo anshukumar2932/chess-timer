@@ -1,89 +1,168 @@
-body, html {
+/* Base styles */
+* {
     margin: 0;
     padding: 0;
-    height: 100%;
-    font-family: Arial, sans-serif;
+    box-sizing: border-box;
 }
 
+body, html {
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background-color: #f3f3f3;
+    color: #333;
+}
+
+/* Menu and game container styles */
 #menu, #game {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 20px;
+    width: 100%;
+    text-align: center;
 }
 
-#menu {
-    width: 100%;
-    padding: 20px;
+/* Settings menu styles */
+#menu h2 {
+    margin-bottom: 15px;
+    font-size: 2em;
+    color: #444;
 }
 
 .setting {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
+.setting label {
+    font-size: 1.1em;
+    margin-right: 10px;
+    color: #555;
+}
+
+input[type="number"], select {
+    padding: 8px 12px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 80px;
+}
+
+/* Game container and layout */
 #game {
     height: 100%;
+    padding: 20px;
 }
 
 #container {
     display: flex;
     width: 100%;
     height: 80%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    overflow: hidden;
+    max-width: 800px;
 }
 
+/* Half-panel styles for white and black timers */
 .half {
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 3em;
-    transition: background-color 0.3s ease;
     cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s;
 }
 
 #white {
-    background-color: white;
-    color: black;
+    background-color: #fafafa;
+    color: #333;
 }
 
 #black {
-    background-color: black;
-    color: white;
+    background-color: #333;
+    color: #fafafa;
+}
+
+.half:hover {
+    transform: scale(1.02);
 }
 
 .timer {
-    font-size: 4em;
+    font-size: 3.5em;
     font-weight: bold;
 }
 
-button {
-    padding: 12px 20px;
-    font-size: 1.2em;
-    border: none;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-button:hover {
-    background-color: #ddd;
+/* Move count and status message */
+#moveCountDisplay, #statusMessage {
+    margin-top: 15px;
+    font-weight: bold;
 }
 
 #moveCountDisplay {
-    font-size: 1.5em;
-    margin-top: 20px;
+    font-size: 1.2em;
+    color: #666;
 }
 
 #statusMessage {
-    font-size: 2em;
-    font-weight: bold;
-    color: red;
-    margin-top: 20px;
+    font-size: 1.8em;
+    color: #d9534f; /* Accent color for status message */
+    text-align: center;
 }
 
+/* Button styles */
+button {
+    padding: 12px 20px;
+    font-size: 1em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s, transform 0.2s;
+    margin: 15px 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Hover effects */
 #white:hover {
-    background-color: lightgray;
+    background-color: #e6e6e6;
 }
 
 #black:hover {
-    background-color: darkgray;
+    background-color: #555;
+}
+
+/* Responsive layout adjustments */
+@media (max-width: 768px) {
+    #container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .timer {
+        font-size: 3em;
+    }
+
+    input[type="number"], select {
+        width: 100%;
+    }
+
+    #menu {
+        padding: 10px;
+    }
+
+    #moveCountDisplay, #statusMessage {
+        font-size: 1.2em;
+    }
 }

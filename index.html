@@ -7,25 +7,74 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="controls">
-        <label for="timeInput">Set timer (in seconds):</label>
-        <input type="number" id="timeInput" min="1" placeholder="Enter time">
-        <button id="startButton">Start</button>
-        <button id="pauseButton">Pause</button>
-        <button id="stopButton">Stop</button>
+    <div id="menu">
+        <h2>Chess Timer Settings</h2>
+        
+        <!-- Timer Settings -->
+        <div class="setting">
+            <label for="timeDifference">Time difference between players:</label>
+            <input type="number" id="timeDifference" value="0" min="0" step="1">
+        </div>
+        
+        <div class="setting">
+            <label for="minutesPerPlayer">Minutes per player:</label>
+            <input type="number" id="minutesPerPlayer" value="5" min="1" step="1">
+        </div>
+        
+        <div class="setting">
+            <label for="extraSeconds">Extra seconds per move:</label>
+            <input type="number" id="extraSeconds" value="0" min="0" step="1">
+        </div>
+
+        <!-- Timing Method Selection -->
+        <div class="setting">
+            <label for="timingMethod">Timing method:</label>
+            <select id="timingMethod">
+                <option value="standard">Standard</option>
+                <option value="fischer">Fischer</option>
+            </select>
+        </div>
+        
+        <!-- Sound Notifications -->
+        <div class="setting">
+            <label for="soundNotifications">Sound notifications:</label>
+            <input type="checkbox" id="soundNotifications" checked>
+        </div>
+        
+        <!-- Keyboard Settings -->
+        <div class="setting">
+            <label for="keyboardType">Keyboard type:</label>
+            <select id="keyboardType">
+                <option value="qwerty">United States (Qwerty)</option>
+                <option value="azerty">France (Azerty)</option>
+            </select>
+        </div>
+
+        <button id="startButton">Start Timer</button>
         <button id="resetButton">Reset</button>
     </div>
-    <div id="container">
-        <div id="white" class="half">
-            <h2>White</h2>
-            <div id="whiteTime" class="timer">00:00</div>
+
+    <div id="game">
+        <div id="controls">
+            <label for="timeInput">Set timer (in seconds):</label>
+            <input type="number" id="timeInput" min="1" placeholder="Enter time">
+            <button id="startButton">Start</button>
+            <button id="pauseButton">Pause</button>
+            <button id="stopButton">Stop</button>
+            <button id="resetButton">Reset</button>
         </div>
-        <div id="black" class="half">
-            <h2>Black</h2>
-            <div id="blackTime" class="timer">00:00</div>
+        <div id="container">
+            <div id="white" class="half">
+                <h2>White</h2>
+                <div id="whiteTime" class="timer">00:00</div>
+            </div>
+            <div id="black" class="half">
+                <h2>Black</h2>
+                <div id="blackTime" class="timer">00:00</div>
+            </div>
         </div>
+        <div id="moveCountDisplay">Moves: 0</div>
     </div>
-    <div id="moveCountDisplay">Moves: 0</div>
 
     <script src="script.js"></script>
 </body>

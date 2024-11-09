@@ -1,68 +1,134 @@
-/* General styles */
-body, html {
+/* Base styles */
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
     height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     font-family: Arial, sans-serif;
+    background-color: #d3d3d3; /* Gray background */
 }
 
+/* Container for the controls */
 #controls {
     margin-bottom: 20px;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
-#controls button {
-    margin: 5px;
-    padding: 10px;
+/* Buttons for general controls */
+input, button {
+    padding: 8px 12px;
     font-size: 1em;
 }
 
-#container {
-    display: flex;
-    width: 80%;
-    height: 60%;
-    justify-content: center;
+/* Fullscreen toggle button styles */
+.fullscreenBtn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 8px 12px;
+    font-size: 1.2em;
+    background-color: rgba(0, 0, 0, 0.5); /* Slight transparent background */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
 }
 
-.half {
+.fullscreenBtn:hover {
+    background-color: rgba(0, 0, 0, 0.7); /* Darker background on hover */
+    transform: scale(1.1); /* Slight zoom effect */
+}
+
+/* Player timer base styles */
+.playerTimer {
+    position: relative;
     flex: 1;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
     font-size: 2em;
     color: white;
-}
-
-#white {
-    background-color: white;
-    color: black;
-}
-
-#black {
     background-color: black;
+    padding: 20px;
+    border-radius: 10px;
+    transition: transform 0.2s ease, background-color 0.3s, font-size 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    min-height: 150px;
+    width: 100%;
 }
 
-.timer {
-    font-size: 3em;
-    font-weight: bold;
+/* Highlight active player */
+.playerTimer.active {
+    background-color: green; /* Highlight the active timer */
+    color: #ffffff;
+    transform: scale(1.05); /* Slight scaling effect */
 }
 
-#moveCountDisplay {
-    margin-top: 20px;
-    font-size: 1.5em;
-    font-weight: bold;
+/* Fullscreen timer styles */
+.playerTimer.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    font-size: 5em;
+    z-index: 1000;
+    justify-content: center;
+    background-color: #333; /* Darker background for fullscreen */
+    box-shadow: none; /* Remove shadow in fullscreen */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Active color styles */
-#white.active {
-    background-color: #f0f0f0;
+/* Fullscreen Exit Button */
+.playerTimer.fullscreen .fullscreenBtn {
+    top: 20px;
+    left: 20px;
+    background-color: rgba(255, 0, 0, 0.5); /* Red color to indicate exit */
 }
 
-#black.active {
-    background-color: #333;
+.playerTimer.fullscreen .fullscreenBtn:hover {
+    background-color: rgba(255, 0, 0, 0.7);
+}
+
+/* Timer container adjustments for small screen sizes */
+@media (max-width: 768px) {
+    #timerContainer {
+        width: 80%;
+        gap: 15px;
+    }
+
+    .playerTimer {
+        padding: 15px;
+        font-size: 1.5em;
+    }
+
+    input, button {
+        padding: 6px 10px;
+        font-size: 0.9em;
+    }
+}
+
+@media (orientation: landscape) {
+    #timerContainer {
+        flex-direction: row;
+    }
+}
+
+@media (orientation: portrait) {
+    #timerContainer {
+        flex-direction: column;
+    }
 }

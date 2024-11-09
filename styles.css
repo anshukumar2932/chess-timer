@@ -6,12 +6,13 @@
 
 body, html {
     height: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     font-family: Arial, sans-serif;
-    background-color: #d3d3d3; /* Gray background */
+    background-color: #d3d3d3;
 }
 
 #controls {
@@ -42,9 +43,8 @@ button:hover {
 
 #timerContainer {
     display: flex;
-    width: 60%;
-    gap: 20px;
-    justify-content: center;
+    width: 100%;
+    height: 100%;
 }
 
 .playerTimer {
@@ -52,26 +52,28 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2em;
+    font-size: 3em;
+    cursor: pointer;
     color: white;
-    background-color: black;
-    padding: 20px;
-    border-radius: 10px;
-    transition: transform 0.2s ease;
-}
-
-.playerTimer.active {
-    background-color: green; /* Highlight the active timer */
-    color: #ffffff;
+    transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 #white {
-    background-color: white;
-    color: black;
+    background-color: #ffffff;
+    color: #000000;
 }
 
 #black {
-    background-color: black;
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.playerTimer.active {
+    background-color: green;
+}
+
+.playerTimer:hover {
+    transform: scale(1.02);
 }
 
 @media (orientation: landscape) {

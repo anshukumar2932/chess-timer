@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const whiteDiv = document.getElementById('white');
     const blackDiv = document.getElementById('black');
     const startButton = document.getElementById('startButton');
+    const pauseButton = document.getElementById('pauseButton');
+    const stopButton = document.getElementById('stopButton');
     const resetButton = document.getElementById('resetButton');
     const timeInput = document.getElementById('timeInput');
     const moveCountDisplay = document.getElementById('moveCountDisplay');
@@ -13,8 +15,14 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentPlayer = 'white';
     let whiteInterval, blackInterval;
     let moveCount = 0;
+    let isPaused = false;
 
     function startTimer() {
+        if (isPaused) {
+            isPaused = false;
+            return;
+        }
+
         if (currentPlayer === 'white') {
             clearInterval(blackInterval);
             whiteInterval = setInterval(() => {
@@ -50,6 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function switchTurn() {
+        if (isPaused) return;
+
         stopTimers();
         currentPlayer = currentPlayer === 'white' ? 'black' : 'white';
         whiteDiv.classList.toggle('active', currentPlayer === 'white');
@@ -65,9 +75,25 @@ document.addEventListener('DOMContentLoaded', () => {
         blackTimeRemaining = parseInt(timeInput.value) || 0;
         currentPlayer = 'white';
         moveCount = 0;
+        isPaused = false;
         whiteDiv.classList.add('active');
         blackDiv.classList.remove('active');
         updateDisplay();
+    }
+
+    function pauseGame() {
+        if (isPaused) {
+            isPaused = false;
+            startTimer();
+        } else {
+            isPaused = true;
+            stopTimers();
+        }
+    }
+
+    function stopGame() {
+        stopTimers();
+        isPaused = true;
     }
 
     startButton.addEventListener('click', () => {
@@ -83,6 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
         startTimer();
     });
 
+    pauseButton.addEventListener('click', pauseGame);
+    stopButton.addEventListener('click', stopGame);
     resetButton.addEventListener('click', resetGame);
 
     whiteDiv.addEventListener('click', () => {

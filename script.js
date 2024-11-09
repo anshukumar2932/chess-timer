@@ -1,87 +1,87 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const whiteTimer = document.getElementById('whiteTime');
+    const blackTimer = document.getElementById('blackTime');
     const whiteDiv = document.getElementById('white');
     const blackDiv = document.getElementById('black');
     const startButton = document.getElementById('startButton');
-    const stopButton = document.getElementById('stopButton');
+    const resetButton = document.getElementById('resetButton');
     const timeInput = document.getElementById('timeInput');
-    const counterDisplay = document.getElementById('counterDisplay');
 
-    let timer;
-    let currentColor = 'white';
-    let timeLimit = 0;
-    let gameStarted = false;
-    let clickCounter = 0;
+    let whiteTimeRemaining = 0;
+    let blackTimeRemaining = 0;
+    let currentPlayer = 'white';
+    let whiteInterval, blackInterval;
 
     function startTimer() {
-        if (timer) clearInterval(timer);
-        timer = setInterval(() => {
-            alert("Time's up! You didn't click in time.");
-            resetGame();
-        }, timeLimit * 60 * 1000);
-    }
-
-    function stopTimer() {
-        if (timer) clearInterval(timer);
-    }
-
-    function switchColor() {
-        if (currentColor === 'white') {
-            currentColor = 'black';
-            blackDiv.classList.add('active');
-            whiteDiv.classList.remove('active');
+        if (currentPlayer === 'white') {
+            clearInterval(blackInterval);
+            whiteInterval = setInterval(() => {
+                whiteTimeRemaining--;
+                updateDisplay();
+                if (whiteTimeRemaining <= 0) {
+                    alert("Time's up! Black wins.");
+                    resetGame();
+                }
+            }, 1000);
         } else {
-            currentColor = 'white';
-            whiteDiv.classList.add('active');
-            blackDiv.classList.remove('active');
+            clearInterval(whiteInterval);
+            blackInterval = setInterval(() => {
+                blackTimeRemaining--;
+                updateDisplay();
+                if (blackTimeRemaining <= 0) {
+                    alert("Time's up! White wins.");
+                    resetGame();
+                }
+            }, 1000);
         }
     }
 
-    function handleClick(color) {
-        if (!gameStarted) return;
-
-        if (color === currentColor) {
-            stopTimer();
-            clickCounter++;
-            updateCounterDisplay();
-            switchColor();
-            startTimer();
-        } else {
-            alert("Wrong color clicked! Game over.");
-            resetGame();
-        }
+    function stopTimers() {
+        clearInterval(whiteInterval);
+        clearInterval(blackInterval);
     }
 
-    function updateCounterDisplay() {
-        counterDisplay.textContent = `Clicks: ${clickCounter}`;
+    function updateDisplay() {
+        whiteTimer.textContent = `${whiteTimeRemaining}s`;
+        blackTimer.textContent = `${blackTimeRemaining}s`;
+    }
+
+    function switchTurn() {
+        stopTimers();
+        currentPlayer = currentPlayer === 'white' ? 'black' : 'white';
+        whiteDiv.classList.toggle('active', currentPlayer === 'white');
+        blackDiv.classList.toggle('active', currentPlayer === 'black');
+        startTimer();
     }
 
     function resetGame() {
-        stopTimer();
-        gameStarted = false;
-        clickCounter = 0;
-        updateCounterDisplay();
-        currentColor = 'white';
+        stopTimers();
+        whiteTimeRemaining = parseInt(timeInput.value) || 0;
+        blackTimeRemaining = parseInt(timeInput.value) || 0;
+        currentPlayer = 'white';
         whiteDiv.classList.add('active');
         blackDiv.classList.remove('active');
+        updateDisplay();
     }
 
     startButton.addEventListener('click', () => {
-        timeLimit = parseInt(timeInput.value);
-        if (isNaN(timeLimit) || timeLimit <= 0) {
-            alert("Please enter a valid time in minutes.");
+        whiteTimeRemaining = parseInt(timeInput.value);
+        blackTimeRemaining = parseInt(timeInput.value);
+        if (isNaN(whiteTimeRemaining) || whiteTimeRemaining <= 0) {
+            alert("Please enter a valid time in seconds.");
             return;
         }
-        gameStarted = true;
-        clickCounter = 0;
-        updateCounterDisplay();
-        currentColor = 'white';
-        whiteDiv.classList.add('active');
-        blackDiv.classList.remove('active');
+        resetGame();
         startTimer();
     });
 
-    stopButton.addEventListener('click', resetGame);
+    resetButton.addEventListener('click', resetGame);
 
-    whiteDiv.addEventListener('click', () => handleClick('white'));
-    blackDiv.addEventListener('click', () => handleClick('black'));
+    whiteDiv.addEventListener('click', () => {
+        if (currentPlayer === 'white') switchTurn();
+    });
+
+    blackDiv.addEventListener('click', () => {
+        if (currentPlayer === 'black') switchTurn();
+    });
 });

@@ -8,12 +8,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let timer;
     let currentColor = 'white';
     let timeLimit = 0;
+    let gameStarted = false;
 
     function startTimer() {
         if (timer) clearInterval(timer);
         timer = setInterval(() => {
             alert("Time's up! You didn't click in time.");
-            stopTimer();
+            resetGame();
         }, timeLimit * 60 * 1000);
     }
 
@@ -31,20 +32,28 @@ document.addEventListener('DOMContentLoaded', () => {
             whiteDiv.classList.add('active');
             blackDiv.classList.remove('active');
         }
-        startTimer();
     }
 
-    whiteDiv.addEventListener('click', () => {
-        if (currentColor === 'white') {
-            switchColor();
-        }
-    });
+    function handleClick(color) {
+        if (!gameStarted) return;
 
-    blackDiv.addEventListener('click', () => {
-        if (currentColor === 'black') {
+        if (color === currentColor) {
+            stopTimer();
             switchColor();
+            startTimer();
+        } else {
+            alert("Wrong color clicked! Game over.");
+            resetGame();
         }
-    });
+    }
+
+    function resetGame() {
+        stopTimer();
+        gameStarted = false;
+        currentColor = 'white';
+        whiteDiv.classList.add('active');
+        blackDiv.classList.remove('active');
+    }
 
     startButton.addEventListener('click', () => {
         timeLimit = parseInt(timeInput.value);
@@ -52,9 +61,15 @@ document.addEventListener('DOMContentLoaded', () => {
             alert("Please enter a valid time in minutes.");
             return;
         }
+        gameStarted = true;
         currentColor = 'white';
-        switchColor();
+        whiteDiv.classList.add('active');
+        blackDiv.classList.remove('active');
+        startTimer();
     });
 
-    stopButton.addEventListener('click', stopTimer);
+    stopButton.addEventListener('click', resetGame);
+
+    whiteDiv.addEventListener('click', () => handleClick('white'));
+    blackDiv.addEventListener('click', () => handleClick('black'));
 });

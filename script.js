@@ -63,10 +63,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isPaused) return;  // Do not allow switching when paused
 
         stopTimers();
+        // Switch the current player
         currentPlayer = currentPlayer === 'white' ? 'black' : 'white';
         whiteDiv.classList.toggle('active', currentPlayer === 'white');
         blackDiv.classList.toggle('active', currentPlayer === 'black');
-        moveCount++;
+        
+        // Only increment the move count after the black player moves
+        if (currentPlayer === 'black') {
+            moveCount++;  // Increment move count only after black's turn
+        }
+
         updateDisplay();
         startTimer();
     }

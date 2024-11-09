@@ -3,23 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chess Timer Game</title>
+    <title>Chess Timer</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div id="controls">
-        <label for="timeInput">Set time for each player (in seconds):</label>
-        <input type="number" id="timeInput" min="1">
+        <label for="timeInput">Set timer (in seconds):</label>
+        <input type="number" id="timeInput" min="1" placeholder="Enter time">
         <button id="startButton">Start</button>
         <button id="pauseButton">Pause</button>
         <button id="stopButton">Stop</button>
         <button id="resetButton">Reset</button>
-        <div id="moveCountDisplay">Moves: 0</div>
     </div>
-    <div id="timerContainer">
-        <div id="white" class="playerTimer active">White: <span id="whiteTime">0s</span></div>
-        <div id="black" class="playerTimer">Black: <span id="blackTime">0s</span></div>
+    <div id="container">
+        <div id="white" class="half">
+            <h2>White</h2>
+            <div id="whiteTime" class="timer">00:00</div>
+        </div>
+        <div id="black" class="half">
+            <h2>Black</h2>
+            <div id="blackTime" class="timer">00:00</div>
+        </div>
     </div>
+    <div id="moveCountDisplay">Moves: 0</div>
+
     <script src="script.js"></script>
 </body>
 </html>

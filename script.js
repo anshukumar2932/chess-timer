@@ -4,11 +4,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const startButton = document.getElementById('startButton');
     const stopButton = document.getElementById('stopButton');
     const timeInput = document.getElementById('timeInput');
+    const counterDisplay = document.getElementById('counterDisplay');
 
     let timer;
     let currentColor = 'white';
     let timeLimit = 0;
     let gameStarted = false;
+    let clickCounter = 0;
 
     function startTimer() {
         if (timer) clearInterval(timer);
@@ -39,6 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (color === currentColor) {
             stopTimer();
+            clickCounter++;
+            updateCounterDisplay();
             switchColor();
             startTimer();
         } else {
@@ -47,9 +51,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function updateCounterDisplay() {
+        counterDisplay.textContent = `Clicks: ${clickCounter}`;
+    }
+
     function resetGame() {
         stopTimer();
         gameStarted = false;
+        clickCounter = 0;
+        updateCounterDisplay();
         currentColor = 'white';
         whiteDiv.classList.add('active');
         blackDiv.classList.remove('active');
@@ -62,6 +72,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         gameStarted = true;
+        clickCounter = 0;
+        updateCounterDisplay();
         currentColor = 'white';
         whiteDiv.classList.add('active');
         blackDiv.classList.remove('active');
